@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { API_URL } from '../../../config/api'
 
 const Stats = () => {
   const [stats, setStats] = useState(null)
@@ -14,7 +15,7 @@ const Stats = () => {
     try {
       setIsLoading(true)
       setError(null)
-      const res = await axios.get('http://localhost:8000/api/dashboard/stats')
+      const res = await axios.get(`${API_URL}/dashboard/stats`)
       setStats(res.data.stats)
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Error loading statistics'

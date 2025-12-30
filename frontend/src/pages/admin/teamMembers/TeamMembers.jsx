@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { API_URL } from '../../../config/api'
 
 const TeamMembers = () => {
   const [teamMembers, setTeamMembers] = useState([])
@@ -16,7 +17,7 @@ const TeamMembers = () => {
     try {
       setIsLoading(true)
       setError(null)
-      const res = await axios.get('http://localhost:8000/api/team-members')
+      const res = await axios.get(`${API_URL}/team-members`)
       setTeamMembers(res.data.teamMembers || [])
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Error'
@@ -34,7 +35,7 @@ const TeamMembers = () => {
     try {
       setIsDeletingId(id)
       setError(null)
-      await axios.delete(`http://localhost:8000/api/team-members/${id}`)
+      await axios.delete(`${API_URL}/team-members/${id}`)
       setTeamMembers((prev) => prev.filter((m) => m._id !== id))
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Error'
@@ -88,7 +89,24 @@ const TeamMembers = () => {
               {teamMembers.map((member, idx) => (
                 <tr key={member._id || idx}>
                   <td>{idx + 1}</td>
-                  <td>{member.name}</td>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      {member.imageUrl ? (
+                        <img 
+                          src={member.imageUrl} 
+                          alt={member.name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                          <span className="text-gray-600 font-semibold text-lg">
+                            {member.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                      <span>{member.name}</span>
+                    </div>
+                  </td>
                   <td>
                     <span className={`badge ${
                       member.role === 'Admin' ? 'badge-error' :

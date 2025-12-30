@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../../../config/api'
 
 const AddProject = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ const AddProject = () => {
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/team-members')
+        const res = await axios.get(`${API_URL}/team-members`)
         setTeamMembers(res.data.teamMembers || [])
       } catch (error) {
         setIsError('Error loading team members')
@@ -43,7 +44,7 @@ const AddProject = () => {
         return
       }
       
-      const res = await axios.post('http://localhost:8000/api/projects', formData)
+      const res = await axios.post(`${API_URL}/projects`, formData)
       console.log('Project created:', res.data)
       navigate('/admin/projects')
     } catch (error) {

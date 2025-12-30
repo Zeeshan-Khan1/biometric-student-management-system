@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../../../config/api'
 
 const AddTask = () => {
   const [formData, setFormData] = useState({
@@ -22,8 +23,8 @@ const AddTask = () => {
     const fetchData = async () => {
       try {
         const [projectsRes, membersRes] = await Promise.all([
-          axios.get('http://localhost:8000/api/projects'),
-          axios.get('http://localhost:8000/api/team-members')
+          axios.get(`${API_URL}/projects`),
+          axios.get(`${API_URL}/team-members`)
         ])
         setProjects(projectsRes.data.projects || [])
         setTeamMembers(membersRes.data.teamMembers || [])
@@ -67,7 +68,7 @@ const AddTask = () => {
         return
       }
       
-      const res = await axios.post('http://localhost:8000/api/tasks', formData)
+      const res = await axios.post(`${API_URL}/tasks`, formData)
       console.log('Task created:', res.data)
       navigate('/admin/tasks')
     } catch (error) {

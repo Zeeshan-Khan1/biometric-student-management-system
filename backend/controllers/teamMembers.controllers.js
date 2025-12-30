@@ -1,28 +1,61 @@
 import TeamMember from "../models/teamMember.model.js"
+import { uploadToCloudinary } from "../utils/cloudinary.js"
 
 // Create team member
 export const createTeamMember = async (req, res) => {
     try {
+        console.log("Request body:", req.body)
+        console.log("Request file:", req.file ? "File exists" : "No file")
+        
         const { name, role } = req.body
 
         if (!name || !role) {
             return res.status(400).json({
+                success: false,
                 message: "Name and Role are required"
             })
         }
 
-        const teamMember = new TeamMember(req.body)
+        let imageUrl = ""
+        
+        // Upload image to Cloudinary if file exists
+        if (req.file) {
+            try {
+                console.log("Uploading image to Cloudinary...")
+                imageUrl = await uploadToCloudinary(req.file)
+                console.log("Image uploaded successfully:", imageUrl)
+            } catch (uploadError) {
+                console.error("Cloudinary upload error:", uploadError)
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed to upload image",
+                    error: uploadError.message
+                })
+            }
+        }
+
+        const teamMemberData = {
+            name,
+            role,
+            imageUrl
+        }
+
+        console.log("Creating team member with data:", teamMemberData)
+        const teamMember = new TeamMember(teamMemberData)
         await teamMember.save()
 
         res.status(201).json({
+            success: true,
             message: "Team member created successfully",
             teamMember
         })
     } catch (error) {
-        console.log(error)
+        console.error("Error creating team member:", error)
         res.status(500).json({
+            success: false,
             message: "Internal Server Error",
-            error: error.message
+            error: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         })
     }
 }
@@ -79,9 +112,28 @@ export const readTeamMemberById = async (req, res) => {
 export const updateTeamMember = async (req, res) => {
     try {
         const { id } = req.params
+        const { name, role } = req.body
+
+        let updateData = { name, role }
+
+        // Upload new image to Cloudinary if file exists
+        if (req.file) {
+            try {
+                const imageUrl = await uploadToCloudinary(req.file)
+                updateData.imageUrl = imageUrl
+            } catch (uploadError) {
+                console.error("Cloudinary upload error:", uploadError)
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed to upload image",
+                    error: uploadError.message
+                })
+            }
+        }
+
         const teamMember = await TeamMember.findByIdAndUpdate(
             id,
-            req.body,
+            updateData,
             { new: true, runValidators: true }
         )
         

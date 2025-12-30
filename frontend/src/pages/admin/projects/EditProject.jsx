@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
+import { API_URL } from '../../../config/api'
 
 const EditProject = () => {
   const { id } = useParams()
@@ -21,12 +22,12 @@ const EditProject = () => {
     const fetchData = async () => {
       try {
         // Fetch team members
-        const membersRes = await axios.get('http://localhost:8000/api/team-members')
+        const membersRes = await axios.get(`${API_URL}/team-members`)
         setTeamMembers(membersRes.data.teamMembers || [])
         setIsLoadingMembers(false)
 
         // Fetch project
-        const projectRes = await axios.get(`http://localhost:8000/api/projects/${id}`)
+        const projectRes = await axios.get(`${API_URL}/projects/${id}`)
         const project = projectRes.data.project
         setFormData({
           name: project.name,
@@ -60,7 +61,7 @@ const EditProject = () => {
         return
       }
       
-      await axios.put(`http://localhost:8000/api/projects/${id}`, formData)
+      await axios.put(`${API_URL}/projects/${id}`, formData)
       navigate('/admin/projects')
     } catch (error) {
       const msg = error?.response?.data?.message || error.message || 'Error'

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { API_URL } from '../../../config/api'
 
 const Projects = () => {
   const [projects, setProjects] = useState([])
@@ -16,7 +17,7 @@ const Projects = () => {
     try {
       setIsLoading(true)
       setError(null)
-      const res = await axios.get('http://localhost:8000/api/projects')
+      const res = await axios.get(`${API_URL}/projects`)
       setProjects(res.data.projects || [])
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Error'
@@ -34,7 +35,7 @@ const Projects = () => {
     try {
       setIsDeletingId(id)
       setError(null)
-      await axios.delete(`http://localhost:8000/api/projects/${id}`)
+      await axios.delete(`${API_URL}/projects/${id}`)
       setProjects((prev) => prev.filter((p) => p._id !== id))
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Error'

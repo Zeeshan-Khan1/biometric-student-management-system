@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { API_URL } from '../../../config/api'
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([])
@@ -21,7 +22,7 @@ const Tasks = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/projects')
+      const res = await axios.get(`${API_URL}/projects`)
       setProjects(res.data.projects || [])
     } catch (err) {
       console.error('Error fetching projects:', err)
@@ -33,8 +34,8 @@ const Tasks = () => {
       setIsLoading(true)
       setError(null)
       const url = selectedProject 
-        ? `http://localhost:8000/api/tasks?projectId=${selectedProject}`
-        : 'http://localhost:8000/api/tasks'
+        ? `${API_URL}/tasks?projectId=${selectedProject}`
+        : `${API_URL}/tasks`
       const res = await axios.get(url)
       setTasks(res.data.tasks || [])
     } catch (err) {
@@ -53,7 +54,7 @@ const Tasks = () => {
     try {
       setIsDeletingId(id)
       setError(null)
-      await axios.delete(`http://localhost:8000/api/tasks/${id}`)
+      await axios.delete(`${API_URL}/tasks/${id}`)
       setTasks((prev) => prev.filter((t) => t._id !== id))
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Error'

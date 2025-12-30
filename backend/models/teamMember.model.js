@@ -9,6 +9,10 @@ const teamMemberSchema = mongoose.Schema({
         type: String,
         enum: ["Admin", "Project Manager", "Developer"],
         required: true
+    },
+    imageUrl: {
+        type: String,
+        default: ""
     }
 }, { timestamps: true })
 

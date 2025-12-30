@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { API_URL } from '../../../config/api'
 
 const Products = () => {
   const [products, setProducts] = useState([])
@@ -12,7 +13,7 @@ const Products = () => {
     try {
       setIsLoading(true)
       setError(null)
-      const res = await axios.get('http://localhost:8000/api/products')
+      const res = await axios.get(`${API_URL}/products`)
       setProducts(res.data.products || [])
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Error'
@@ -30,7 +31,7 @@ const Products = () => {
     try {
       setIsDeletingId(id)
       setError(null)
-      await axios.delete(`http://localhost:8000/api/products/${id}`)
+      await axios.delete(`${API_URL}/products/${id}`)
       // remove from local state
       setProducts((prev) => prev.filter((p) => p._id !== id))
     } catch (err) {

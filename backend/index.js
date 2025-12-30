@@ -8,6 +8,7 @@ import teamMemberRoutes from "./routes/teamMembers.routes.js"
 import projectRoutes from "./routes/projects.routes.js"
 import taskRoutes from "./routes/tasks.routes.js"
 import dashboardRoutes from "./routes/dashboard.routes.js"
+import userRoutes from "./routes/users.routes.js"
 import connectDB from "./database/database.js"
 
 dotenv.config();
@@ -20,7 +21,7 @@ connectDB()
 
 // CORS FIX
 app.use(cors({
-    origin: "http://localhost:5173",   // your frontend URL
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
@@ -32,6 +33,7 @@ app.use("/api", teamMemberRoutes)
 app.use("/api", projectRoutes)
 app.use("/api", taskRoutes)
 app.use("/api", dashboardRoutes)
+app.use("/api", userRoutes)
 
 const PORT = process.env.PORT || 8000
 app.listen(PORT, () => {

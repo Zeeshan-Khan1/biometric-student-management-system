@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../../../config/api'
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ const AddProduct = () => {
     try {
       console.log(formData)
       // send JSON body directly to backend (hardcoded URL to avoid .env issues)
-      const res = await axios.post('http://localhost:8000/api/products', formData)
+      const res = await axios.post(`${API_URL}/products`, formData)
       console.log('Product created:', res.data)
       navigate('/admin/products')
     } catch (error) {

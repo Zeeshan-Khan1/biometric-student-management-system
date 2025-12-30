@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
+import { API_URL } from '../../../config/api'
 
 const EditTask = () => {
   const { id } = useParams()
@@ -24,14 +25,14 @@ const EditTask = () => {
       try {
         // Fetch projects and team members
         const [projectsRes, membersRes] = await Promise.all([
-          axios.get('http://localhost:8000/api/projects'),
-          axios.get('http://localhost:8000/api/team-members')
+          axios.get(`${API_URL}/projects`),
+          axios.get(`${API_URL}/team-members`)
         ])
         setProjects(projectsRes.data.projects || [])
         setTeamMembers(membersRes.data.teamMembers || [])
 
         // Fetch task
-        const taskRes = await axios.get(`http://localhost:8000/api/tasks/${id}`)
+        const taskRes = await axios.get(`${API_URL}/tasks/${id}`)
         const task = taskRes.data.task
         setFormData({
           title: task.title,
@@ -84,7 +85,7 @@ const EditTask = () => {
         return
       }
       
-      await axios.put(`http://localhost:8000/api/tasks/${id}`, formData)
+      await axios.put(`${API_URL}/tasks/${id}`, formData)
       navigate('/admin/tasks')
     } catch (error) {
       const msg = error?.response?.data?.message || error.message || 'Error'

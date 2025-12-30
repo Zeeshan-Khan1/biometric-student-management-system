@@ -11,6 +11,7 @@ import EditTask from "./pages/admin/tasks/EditTask"
 import TeamMembers from "./pages/admin/teamMembers/TeamMembers"
 import AddTeamMember from "./pages/admin/teamMembers/AddTeamMember"
 import EditTeamMember from "./pages/admin/teamMembers/EditTeamMember"
+import Users from "./pages/admin/users/Users"
 
 import Home from "./pages/user/home/Home"
 
@@ -40,6 +41,9 @@ const App = () => {
         <Route path="team-members" element={<TeamMembers />} />
         <Route path="add-team-member" element={<AddTeamMember />} />
         <Route path="edit-team-member/:id" element={<EditTeamMember />} />
+        
+        {/* Users routes */}
+        <Route path="users" element={<Users />} />
       </Route>
     </Routes>
   )
