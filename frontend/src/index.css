@@ -1,2 +1,31 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@theme {
+  --color-primary: #f28fb4; /* soft rose */
+  --color-secondary: #a78bfa; /* lavender */
+  --color-accent: #7dd3fc; /* sky */
+  --color-base-100: #fdfbff; /* pastel background */
+  --color-base-200: #f6f2ff;
+  --color-neutral: #1f2937;
+}
+
+body {
+  @apply bg-base-200 text-neutral;
+  background: radial-gradient(circle at 20% 20%, rgba(242,143,180,0.12), transparent 30%),
+              radial-gradient(circle at 80% 0%, rgba(167,139,250,0.12), transparent 28%),
+              radial-gradient(circle at 50% 80%, rgba(125,211,252,0.12), transparent 32%),
+              #fdfbff;
+}
+
+.glass-card {
+  @apply bg-base-100/80 backdrop-blur shadow-lg rounded-2xl border border-white/60;
+}
+
+.soft-btn {
+  @apply btn rounded-full shadow-md transition-all duration-200;
+}
+
+.soft-hover {
+  @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg;
+}

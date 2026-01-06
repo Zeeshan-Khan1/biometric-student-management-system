@@ -4,11 +4,10 @@ import dotenv from "dotenv";
 
 
 
-import teamMemberRoutes from "./routes/teamMembers.routes.js"
-import projectRoutes from "./routes/projects.routes.js"
-import taskRoutes from "./routes/tasks.routes.js"
-import dashboardRoutes from "./routes/dashboard.routes.js"
-import userRoutes from "./routes/users.routes.js"
+import authRoutes from "./routes/auth.routes.js"
+import studentRoutes from "./routes/students.routes.js"
+import fingerprintRoutes from "./routes/fingerprint.routes.js"
+import reportRoutes from "./routes/reports.routes.js"
 import connectDB from "./database/database.js"
 
 dotenv.config();
@@ -29,11 +28,11 @@ app.use(cors({
 
 // Middleware
 app.use(express.json())
-app.use("/api", teamMemberRoutes)
-app.use("/api", projectRoutes)
-app.use("/api", taskRoutes)
-app.use("/api", dashboardRoutes)
-app.use("/api", userRoutes)
+app.use(express.urlencoded({ extended: true }))
+app.use("/api", authRoutes)
+app.use("/api", studentRoutes)
+app.use("/api", fingerprintRoutes)
+app.use("/api", reportRoutes)
 
 const PORT = process.env.PORT || 8000
 app.listen(PORT, () => {

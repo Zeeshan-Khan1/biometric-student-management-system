@@ -1,50 +1,33 @@
 import { Routes, Route, Navigate } from "react-router"
+import Landing from "./pages/Landing"
+import Dashboard from "./pages/Dashboard"
+import RegisterStudent from "./pages/RegisterStudent"
+import Attendance from "./pages/Attendance"
+import StudentList from "./pages/StudentList"
+import Reports from "./pages/Reports"
+import Sidebar from "./components/Sidebar"
+import Navbar from "./components/Navbar"
 
-import Dashboard from "./pages/admin/dashboard/Dashboard"
-import Stats from "./pages/admin/stats/Stats"
-import Projects from "./pages/admin/projects/Projects"
-import AddProject from "./pages/admin/projects/AddProject"
-import EditProject from "./pages/admin/projects/EditProject"
-import Tasks from "./pages/admin/tasks/Tasks"
-import AddTask from "./pages/admin/tasks/AddTask"
-import EditTask from "./pages/admin/tasks/EditTask"
-import TeamMembers from "./pages/admin/teamMembers/TeamMembers"
-import AddTeamMember from "./pages/admin/teamMembers/AddTeamMember"
-import EditTeamMember from "./pages/admin/teamMembers/EditTeamMember"
-import Users from "./pages/admin/users/Users"
-
-import Home from "./pages/user/home/Home"
+const Shell = ({ children }) => (
+  <div className="min-h-screen flex bg-base-200">
+    <Sidebar />
+    <div className="flex-1 flex flex-col">
+      <Navbar />
+      <div className="flex-1">{children}</div>
+    </div>
+  </div>
+)
 
 const App = () => {
   return (
     <Routes>
-      {/* user routes */}
-      <Route path="/" element={<Home />} />
-
-      {/* admin routes */}
-      <Route path="/admin" element={<Dashboard />} >
-        {/* When user visits /admin → redirect */}
-        <Route index element={<Navigate to="stats" replace />} />
-        <Route path="stats" element={<Stats />} />
-        
-        {/* Projects routes */}
-        <Route path="projects" element={<Projects />} />
-        <Route path="add-project" element={<AddProject />} />
-        <Route path="edit-project/:id" element={<EditProject />} />
-        
-        {/* Tasks routes */}
-        <Route path="tasks" element={<Tasks />} />
-        <Route path="add-task" element={<AddTask />} />
-        <Route path="edit-task/:id" element={<EditTask />} />
-        
-        {/* Team Members routes */}
-        <Route path="team-members" element={<TeamMembers />} />
-        <Route path="add-team-member" element={<AddTeamMember />} />
-        <Route path="edit-team-member/:id" element={<EditTeamMember />} />
-        
-        {/* Users routes */}
-        <Route path="users" element={<Users />} />
-      </Route>
+      <Route path="/" element={<Landing />} />
+      <Route path="/dashboard" element={<Shell><Dashboard /></Shell>} />
+      <Route path="/register-student" element={<Shell><RegisterStudent /></Shell>} />
+      <Route path="/attendance" element={<Shell><Attendance /></Shell>} />
+      <Route path="/students" element={<Shell><StudentList /></Shell>} />
+      <Route path="/reports" element={<Shell><Reports /></Shell>} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

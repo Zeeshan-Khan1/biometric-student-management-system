@@ -5,12 +5,13 @@ dotenv.config()
 
 const connectDB = async () => {
     try {
-        const mongoURI = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}/${process.env.MONGODB_DATABASE}?appName=${process.env.MONGODB_APP_NAME}`
+        const mongoURI = process.env.MONGO_URI
+        if (!mongoURI) throw new Error("MONGO_URI is not set")
         await mongoose.connect(mongoURI)
         console.log(`Connected to MongoDB!`);
     } catch (error) {
-        console.log("OH NO ERROR");
-        console.log(error);
+        console.log("Mongo connection error", error);
+        process.exit(1)
     }
 }
 
